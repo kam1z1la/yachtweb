@@ -1,0 +1,120 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+</head>
+<body>
+
+<main th:fragment="content(profileContent)">
+
+    <form th:action="@{/cabinet}" method="get" th:object="${account}">
+        <aside class="sidebar" data-sidebar>
+
+            <div class="sidebar-info">
+
+                <figure class="avatar-box">
+                    <img src="/images/ma-avatar2.png" alt="user-photo" width="80px">
+                </figure>
+
+                <div class="info-content">
+                    <h1 class="name" title="user name" th:text="${account.name} + ' ' + ${account.lastName}"></h1>
+
+                    <button class="info_more-btn" data-sidebar-btn>
+                        <span>Show more</span>
+                        <ion-icon name="chevron-down"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-info_more">
+
+                <div class="separator"></div>
+                <ul class="contacts-list">
+
+                    <li class="contact-item">
+
+                        <div class="icon-box">
+                            <ion-icon name="mail-outline"></ion-icon>
+                        </div>
+
+                        <div class="contact-info">
+                            <p class="contact-title" th:href="'mailto:' + ${account.email}" th:text="${account.email}"></p>
+                        </div>
+
+                    </li>
+
+                    <li class="contact-item">
+
+                        <div class="icon-box">
+                            <ion-icon name="phone-portrait-outline"></ion-icon>
+                        </div>
+
+                        <div class="contact-info">
+                            <p class="contact-title" th:href="'tel:' + ${account.phoneNumber}" th:text="${account.phoneNumber}"></p>
+                        </div>
+
+                    </li>
+
+                    <li class="contact-item" th:if="${account.bio != null and account.bio != ''}">
+
+                        <div class="contact-info">
+                            <p class="contact-title" th:text="${account.bio}"></p>
+                        </div>
+
+                    </li>
+
+
+                    <li class="contact-item">
+
+                        <a class="btn btn-sm btn-outline-dark" th:href="@{/account/edit-account(id=${account.id})}">Update</a>
+
+                    </li>
+
+                    <li class="contact-item">
+
+                        <a class="btn btn-sm btn-outline-dark" th:href="@{/account/login-page(logout=${account.id})}">Logout</a>
+
+                    </li>
+                </ul>
+
+            </div>
+        </aside>
+    </form>
+    <div class="main-content">
+
+        <!-- navbar -->
+
+        <nav class="profile-nav">
+
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="/cabinet/profile-order" class="nav-link" data-nav-link>Order</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/cabinet/profile-review" class="nav-link" data-nav-link id="review">Review</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/cabinet/profile-yacht" class="nav-link" data-nav-link>Yachts</a>
+                </li>
+            </ul>
+
+        </nav>
+
+        <th:block th:switch="${profileContent}">
+            <th:block th:case="'order'">
+                <div th:replace="account/profile/profile-order :: profileContent()"></div>
+            </th:block>
+            <th:block th:case="'review'">
+                <div th:replace="account/profile/profile-review :: profileContent()"></div>
+            </th:block>
+            <th:block th:case="'yacht'">
+                <div th:replace="account/profile/profile-yacht :: profileContent()"></div>
+            </th:block>
+        </th:block>
+
+    </div>
+</main>
+</body>
+</html>
